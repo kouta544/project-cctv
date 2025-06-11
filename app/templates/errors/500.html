@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}500 Error Server - CCTV Monitor{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <div class="error-container">
+        <div class="error-illustration">
+            <span class="error-icon error-icon-server">⚠️</span>
+            <div class="error-animation">
+                <span class="error-pulse"></span>
+                <span class="error-pulse"></span>
+                <span class="error-pulse"></span>
+            </div>
+        </div>
+        
+        <div class="error-content">
+            <h1 class="error-title error-title-500">500</h1>
+            <h2 class="error-subtitle">Kesalahan Server Internal</h2>
+            <p class="error-description">
+                Terjadi kesalahan tak terduga pada server kami. 
+                Tim teknis telah diberitahu dan sedang menangani masalah ini.
+                Silakan coba lagi dalam beberapa menit.
+            </p>
+            
+            <div class="error-actions">
+                <a href="{{ url_for('main.home') }}" class="btn btn-primary">
+                    <span class="btn-icon">🏠</span>
+                    Kembali ke Beranda
+                </a>
+                <button onclick="location.reload()" class="btn btn-secondary">
+                    <span class="btn-icon">🔄</span>
+                    Muat Ulang Halaman
+                </button>
+            </div>
+            
+            <div class="error-help">
+                <p class="text-muted">
+                    Jika masalah terus berlanjut, hubungi administrator sistem.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

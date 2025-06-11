@@ -1,0 +1,151 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Laporan Pemantauan - Sistem CCTV{% endblock %}
+
+{% block content %}
+<div class="home-container">
+    <div class="page-header">
+        <h1>Laporan Pemantauan</h1>
+        <p>Analisis data aktivitas dan statistik pergerakan dari sistem CCTV</p>
+    </div>    
+    <div class="card">
+        <h3>Filter Periode</h3>
+        <div class="detail-item">
+            <span class="detail-label">Rentang Waktu:</span>
+            <select id="date-range" onchange="updateReports()" class="form-select">
+                <option value="today">Hari Ini</option>
+                <option value="week">7 Hari Terakhir</option>
+                <option value="month">30 Hari Terakhir</option>
+                <option value="custom">Rentang Khusus</option>
+            </select>
+        </div>
+    </div>
+      <div class="stats-grid">
+        <div class="counter">
+            <h3>Total Aktivitas Terdeteksi</h3>
+            <div class="counter-content">
+                <p class="entries">Orang Masuk <span>{{ total_entries if total_entries else 0 }}</span></p>
+                <p class="exits">Orang Keluar <span>{{ total_exits if total_exits else 0 }}</span></p>
+            </div>
+        </div>        <div class="stat-card">
+            <h3>Riwayat Aktivitas</h3>
+            <div class="table-container">
+                <table class="activity-table">
+                    <thead>
+                        <tr>
+                            <th>Waktu</th>
+                            <th>Masuk</th>
+                            <th>Keluar</th>
+                            <th>Di Ruangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <td>{{ log.timestamp.strftime('%d/%m/%Y %H:%M') if log.timestamp else 'N/A' }}</td>
+                            <td><span class="activity-badge entries">{{ log.entries if log.entries is defined else (log.people_entered if log.people_entered is defined else 0) }}</span></td>
+                            <td><span class="activity-badge exits">{{ log.exits if log.exits is defined else (log.people_exited if log.people_exited is defined else 0) }}</span></td>
+                            <td><span class="activity-badge total">{{ log.people_in_room if log.people_in_room is defined else 0 }}</span></td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4" class="no-data">
+                                Tidak ada data aktivitas tersedia
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Activity table specific styles */
+.activity-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--spacing-md);
+}
+
+.activity-table th,
+.activity-table td {
+    padding: var(--spacing-sm) var(--spacing-md);
+    text-align: left;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.activity-table th {
+    background-color: var(--bg-tertiary);
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+}
+
+.activity-table tbody tr:hover {
+    background-color: var(--bg-secondary);
+}
+
+.activity-badge {
+    display: inline-block;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    font-size: 0.875rem;
+    min-width: 30px;
+    text-align: center;
+}
+
+.activity-badge.entries {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--info-color);
+}
+
+.activity-badge.exits {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger-color);
+}
+
+.activity-badge.total {
+    background: rgba(79, 70, 229, 0.1);
+    color: var(--primary-color);
+}
+
+.no-data {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: var(--spacing-xl);
+    font-style: italic;
+}
+
+.form-select {
+    padding: var(--spacing-sm);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 1rem;
+    min-width: 200px;
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.counter-content {
+    margin-top: var(--spacing-md);
+}
+</style>
+
+{% block scripts %}
+<script>
+function updateReports() {
+    const range = document.getElementById('date-range').value;
+    // Implement date range filtering logic here
+}
+</script>
+{% endblock %}
+{% endblock %}
